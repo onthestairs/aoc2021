@@ -4,6 +4,7 @@
 module Day4 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
+import Data.List (partition)
 import Relude
 import Text.Megaparsec (anySingle, eof, lookAhead, sepBy1, try)
 import Text.Megaparsec.Char (char, hspace, newline)
@@ -48,26 +49,21 @@ isWinnerRows ns c = any (all (\x -> x `elem` ns)) c
 isWinnerCols :: [Int] -> [[Int]] -> Bool
 isWinnerCols ns c = isWinnerRows ns (transpose c)
 
-findWinner :: [[[Int]]] -> [Int] -> Maybe [[Int]]
-findWinner cs ns = find (isWinner ns) cs
+winners [] cs = []
+winners _ [] = []
+winners (ns : nss) cs = ws <> (winners nss (map snd nws))
+  where
+    (ws, nws) = partition (\(ns', c) -> isWinner ns' c) (map (\c -> (ns, c)) cs)
 
--- findFirstWinner ns cs = find (isJust . findWinner cs) (inits ns)
-findFirstWinner ns cs = do
-  (ns', c') <- find (isJust . snd) $ map (\ns' -> (ns', findWinner cs ns')) (inits ns)
-  c <- c'
-  pure (ns', c)
-
--- solve1 (ns, cs) = findFirstWinner ns cs
-
-solve1 (ns, cs) = do
-  (ns', c) <- findFirstWinner ns cs
+getScore ns cs selector = do
+  (ns', c) <- viaNonEmpty selector $ winners (inits ns) cs
   lastN <- viaNonEmpty last ns'
   let unmarkedMs = filter (\x -> not $ x `elem` ns') (concat c)
   pure $ (sum unmarkedMs) * lastN
 
--- pure $ unmarkedMs
+solve1 (ns, cs) = getScore ns cs head
 
-solve2 ns = 1
+solve2 (ns, cs) = getScore ns cs last
 
 solution =
   Solution
