@@ -24,6 +24,8 @@ let
     # conduit
     lens
     generic-lens
+    matrix
+    matrix-lens
     # multiset
     # linear
     # arithmoi
