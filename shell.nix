@@ -26,7 +26,7 @@ let
     generic-lens
     matrix
     matrix-lens
-    # multiset
+    multiset
     # linear
     # arithmoi
     # monad-loops
