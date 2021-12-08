@@ -24,7 +24,7 @@ import Day4
 import Day5
 import Day6
 import Day7
--- import Day8
+import Day8
 -- import Day9
 import Relude
 
@@ -36,8 +36,8 @@ solutions =
       (4, SimpleSolution Day4.solution),
       (5, SimpleSolution Day5.solution),
       (6, SimpleSolution Day6.solution),
-      (7, SimpleSolution Day7.solution)
-      -- (8, SimpleSolution Day8.solution),
+      (7, SimpleSolution Day7.solution),
+      (8, IOSimpleSolution Day8.solution)
       -- (9, SimpleSolution Day9.solution),
       -- (10, SimpleSolution Day10.solution),
       -- (11, SimpleSolution Day11.solution),
@@ -60,6 +60,9 @@ peekInput day = do
     Just (SimpleSolution solution) -> do
       parsed <- view #_parse solution
       print parsed
+    Just (IOSimpleSolution solution) -> do
+      parsed <- view #_parseIO solution
+      print parsed
     Just (TwoParseSolution solution) -> do
       parsed1 <- view #_parse1 solution
       putStrLn "Part 1"
@@ -75,6 +78,19 @@ showSolution (SimpleSolution solution) part = do
     Just parsed -> do
       let part1Result = view #_solve1 solution $ parsed
       let part2Result = view #_solve2 solution $ parsed
+      case part of
+        Part1 -> print part1Result
+        Part2 -> print part2Result
+        Both -> do
+          print part1Result
+          print part2Result
+showSolution (IOSimpleSolution solution) part = do
+  maybeParsed <- view #_parseIO solution
+  case maybeParsed of
+    Nothing -> putStrLn "Couldn't parse"
+    Just parsed -> do
+      part1Result <- view #_solve1IO solution $ parsed
+      part2Result <- view #_solve2IO solution $ parsed
       case part of
         Part1 -> print part1Result
         Part2 -> print part2Result

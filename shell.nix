@@ -13,6 +13,11 @@ let
   #       ];
   #   }
   # );
+  myHaskellPackges = pkgs.haskellPackages.override {
+    overrides = hself: hsuper: {
+      "holmes" = pkgs.haskell.lib.unmarkBroken (pkgs.haskell.lib.dontCheck hsuper.holmes);
+    };
+  };
 
   haskellDeps = ps: with ps; [
     # hlint
@@ -27,11 +32,11 @@ let
     matrix
     matrix-lens
     multiset
-    # linear
+    holmes
     # arithmoi
     # monad-loops
   ];
-  my-ghc = pkgs.haskellPackages.ghcWithPackages haskellDeps;
+  my-ghc = myHaskellPackges.ghcWithPackages haskellDeps;
 in
 pkgs.mkShell {
   buildInputs = [
