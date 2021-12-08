@@ -1,3 +1,4 @@
+{-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
@@ -7,10 +8,9 @@
 
 module Day8 (solution) where
 
-import AOC (IOSolution (..), Parser, parseFile, parseInt)
--- import Control.Monad.Watson (satisfying)
--- import Data.Holmes hiding (Input, satisfying)
-import Data.Holmes hiding (Input)
+import AOC (Parser, Solution (..), parseFile, parseInt)
+import Control.Monad.Watson (Watson, satisfying)
+import Data.Holmes hiding (Input, satisfying)
 import Relude hiding (lift, some)
 import Text.Megaparsec (anySingle, eof, lookAhead, oneOf, sepBy1, some, try)
 import Text.Megaparsec.Char (char, newline, string)
@@ -40,11 +40,10 @@ parseLine = do
 
 digitsMap = [(0, "abcefg"), (1, "cf"), (2, "acdeg"), (3, "acdfg"), (4, "bcdf"), (5, "abdfg"), (6, "abdefg"), (7, "acf"), (8, "abcdefg"), (9, "abcdfg")]
 
-count1478s :: [[Char]] -> Int
 count1478s ds = length $ filter (\d -> let n = length d in n `elem` [2, 4, 3, 7]) ds
 
-solve1 :: Input -> IO Int
-solve1 is = pure $ sum $ map (count1478s . snd) is
+solve1 :: Input -> Int
+solve1 is = sum $ map (count1478s . snd) is
 
 data Signal = SA | SB | SC | SD | SE | SF | SG
   deriving stock (Eq, Ord, Show, Enum, Bounded, Generic)
@@ -52,30 +51,26 @@ data Signal = SA | SB | SC | SD | SE | SF | SG
 
 charToSignal c = toEnum (ord c - 97)
 
-possibleDigits' :: [Char] -> [[Char]]
-possibleDigits' d = map snd $ filter (\(n, cs) -> length cs == length d) digitsMap
+possibleDigits :: [Char] -> [[Char]]
+possibleDigits d = map snd $ filter (\(n, cs) -> length cs == length d) digitsMap
 
-charToV vs c = fromMaybe (error ("no v for c:" <> show c <> show index)) (vs !!? index)
+charToV vs c = fromMaybe (error "no v for c") (vs !!? index)
   where
     index = ord c - 97
 
 charsToVs vs cs = map (charToV vs) cs
 
-digitSegmentsMatch :: forall m. MonadCell m => [Prop m (Intersect Signal)] -> [Char] -> [Char] -> Prop m (Intersect Bool)
 digitSegmentsMatch vs d digitSegments = and' [or' [(lift $ charToSignal c) .== (charToV vs c2) | c2 <- digitSegments] | c <- d]
 
-constrainSignals :: forall m. MonadCell m => [Prop m (Intersect Signal)] -> [Char] -> Prop m (Intersect Bool)
-constrainSignals vs d = or' [digitSegmentsMatch vs d possibleDigit | possibleDigit <- possibleDigits]
-  where
-    possibleDigits = possibleDigits' d
+constrainSignals vs d = or' [digitSegmentsMatch vs d possibleDigit | possibleDigit <- possibleDigits d]
 
-constraints :: forall m. MonadCell m => [[Char]] -> [Prop m (Intersect Signal)] -> Prop m (Intersect Bool)
 constraints ds vs = (distinct vs) .&& (and' (map (\d -> constrainSignals vs d) ds))
 
+solveMapping :: [[Char]] -> Maybe [Intersect Signal]
 solveMapping ds = do
-  -- v[0] is what 'a' on the wire, is as a segment
-  -- let vs :: Config Holmes (Intersect Signal)
-  let vs = 7 `from` [SA .. SG]
+  -- v[0] is the segement shown for 'a' on the wire
+  -- vs :: Config Holmes (Intersect Signal)
+  let vs = 7 `from` [SA .. SG] :: forall h. Config (Watson h) (Intersect Signal)
   vs `satisfying` (constraints ds)
 
 toLetter :: Signal -> Char
@@ -83,12 +78,13 @@ toLetter s = toEnum $ (+) 97 $ fromEnum s
 
 extractLetter l = toLetter $ fromMaybe (error "bad solution") $ viaNonEmpty head (toList l)
 
+makeMapping :: [Intersect Signal] -> [(Char, Char)]
 makeMapping os = zip (map extractLetter os) ['a' .. 'g']
 
-deduceMapping :: [[Char]] -> IO (Maybe [(Char, Char)])
+deduceMapping :: [[Char]] -> Maybe [(Char, Char)]
 deduceMapping ds = do
   solution <- solveMapping ds
-  pure $ makeMapping <$> solution
+  pure $ makeMapping solution
 
 findSignal :: [(Char, Char)] -> Char -> Maybe Char
 findSignal mapping c = snd <$> find ((==) c . fst) mapping
@@ -105,23 +101,20 @@ toInt ns = go (reverse ns) 0
     go (n : ns') p = n * 10 ^ p + go ns' (p + 1)
     go [] _ = 0
 
-deduceOutput :: ([[Char]], [[Char]]) -> IO (Maybe Int)
+deduceOutput :: ([[Char]], [[Char]]) -> Maybe Int
 deduceOutput (is, os) = do
   mapping <- deduceMapping is
-  let justMapping = fromMaybe (error "no solution") (mapping)
-  let ns = mapM (\o -> decode justMapping o) os
-  pure $ toInt <$> ns
+  ns <- mapM (\o -> decode mapping o) os
+  pure $ toInt ns
 
--- solve2 ((is, os) : ns) = deduceOutput (is, os)
-
+solve2 :: Input -> Maybe Int
 solve2 ns = do
-  maybeDs <- mapM deduceOutput ns
-  let ds = sequence maybeDs
-  pure $ sum <$> ds
+  ds <- mapM deduceOutput ns
+  pure $ sum ds
 
 solution =
-  IOSolution
-    { _parseIO = parseFile "8.txt" parseInput,
-      _solve1IO = solve1,
-      _solve2IO = solve2
+  Solution
+    { _parse = parseFile "8.txt" parseInput,
+      _solve1 = solve1,
+      _solve2 = solve2
     }

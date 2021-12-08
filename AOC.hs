@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module AOC (Solution (..), IOSolution (..), SeparateParseSolution (..), GenericSolution (..), Parser, parseFile, parseInt, parseInt64, parseInteger, parseSignedInt) where
+module AOC (Solution (..), SeparateParseSolution (..), GenericSolution (..), Parser, parseFile, parseInt, parseInt64, parseInteger, parseSignedInt) where
 
 import Control.Lens
 import Relude
@@ -25,17 +25,9 @@ data SeparateParseSolution a b c d = SeparateParseSolution
   }
   deriving (Generic)
 
-data IOSolution a b c = IOSolution
-  { _parseIO :: IO (Maybe a),
-    _solve1IO :: a -> IO b,
-    _solve2IO :: a -> IO c
-  }
-  deriving (Generic)
-
 data GenericSolution where
   SimpleSolution :: (Show a, Show b, Show c) => Solution a b c -> GenericSolution
   TwoParseSolution :: (Show a, Show b, Show c, Show d) => SeparateParseSolution a b c d -> GenericSolution
-  IOSimpleSolution :: (Show a, Show b, Show c) => IOSolution a b c -> GenericSolution
 
 type Path = String
 
