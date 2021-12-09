@@ -25,7 +25,7 @@ import Day5
 import Day6
 import Day7
 import Day8
--- import Day9
+import Day9
 import Relude
 
 solutions =
@@ -37,8 +37,8 @@ solutions =
       (5, SimpleSolution Day5.solution),
       (6, SimpleSolution Day6.solution),
       (7, SimpleSolution Day7.solution),
-      (8, SimpleSolution Day8.solution)
-      -- (9, SimpleSolution Day9.solution),
+      (8, SimpleSolution Day8.solution),
+      (9, SimpleSolution Day9.solution)
       -- (10, SimpleSolution Day10.solution),
       -- (11, SimpleSolution Day11.solution),
       -- (12, SimpleSolution Day12.solution),

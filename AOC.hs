@@ -2,12 +2,12 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module AOC (Solution (..), SeparateParseSolution (..), GenericSolution (..), Parser, parseFile, parseInt, parseInt64, parseInteger, parseSignedInt) where
+module AOC (Solution (..), SeparateParseSolution (..), GenericSolution (..), Parser, parseFile, parseInt, parseDigit, parseInt64, parseInteger, parseSignedInt) where
 
 import Control.Lens
 import Relude
 import Text.Megaparsec (Parsec, runParser)
-import Text.Megaparsec.Char (char)
+import Text.Megaparsec.Char (char, digitChar)
 import qualified Text.Megaparsec.Char.Lexer as L
 
 data Solution a b c = Solution
@@ -38,6 +38,24 @@ parseFile path parse = do
   fileContents <- readFileText ("./data/" <> path)
   let result = runParser parse path fileContents
   pure $ rightToMaybe result
+
+readDigit '0' = Just 0
+readDigit '1' = Just 1
+readDigit '2' = Just 2
+readDigit '3' = Just 3
+readDigit '4' = Just 4
+readDigit '5' = Just 5
+readDigit '6' = Just 6
+readDigit '7' = Just 7
+readDigit '8' = Just 8
+readDigit '9' = Just 9
+
+parseDigit :: Parser Int
+parseDigit = do
+  c <- digitChar
+  case readDigit c of
+    Just n -> pure n
+    Nothing -> fail "not a digit"
 
 parseInt :: Parser Int
 parseInt = L.decimal
