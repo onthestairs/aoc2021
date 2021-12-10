@@ -33,7 +33,7 @@ let
     matrix-lens
     multiset
     holmes
-    # arithmoi
+    Stack
     # monad-loops
   ];
   my-ghc = myHaskellPackges.ghcWithPackages haskellDeps;
