@@ -10,7 +10,7 @@ import Data.Generics.Labels
 import qualified Data.Map.Strict as Map
 import Day1
 import Day10
--- import Day11
+import Day11
 import Day12
 -- import Day13
 -- import Day14
@@ -40,7 +40,7 @@ solutions =
       (8, SimpleSolution Day8.solution),
       (9, SimpleSolution Day9.solution),
       (10, SimpleSolution Day10.solution),
-      -- (11, SimpleSolution Day11.solution),
+      (11, SimpleSolution Day11.solution),
       (12, SimpleSolution Day12.solution)
       -- (13, SimpleSolution Day13.solution),
       -- (14, SimpleSolution Day14.solution),
