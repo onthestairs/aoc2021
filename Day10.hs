@@ -58,7 +58,7 @@ lineScore1 cs = case parseLine cs of
   InvalidChar c -> score c
   _ -> 0
 
-solve1 ls = foldMap (Sum . lineScore1) ls
+solve1 ls = getSum $ foldMap (Sum . lineScore1) ls
 
 charScore2 ')' = 1
 charScore2 ']' = 2

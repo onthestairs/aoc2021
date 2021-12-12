@@ -30,6 +30,7 @@ fixM f x = do
   x' <- f x
   if x == x' then pure x else fixM f x'
 
+propStep :: Matrix.Matrix (Int, Bool) -> State Int (Matrix.Matrix (Int, Bool))
 propStep m = do
   let cs = filter (\c -> view (elemAt c . _1) m > 9 && view (elemAt c . _2) m == False) (coords m)
   modify (+ length cs)
