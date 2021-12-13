@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day3 (solution) where
+module Day03 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import Relude
@@ -72,7 +72,7 @@ solve2 ns = toDec (ogr ns) * toDec (csr ns)
 
 solution =
   Solution
-    { _parse = parseFile "3.txt" parseInts,
+    { _parse = parseFile "03.txt" parseInts,
       _solve1 = solve1,
       _solve2 = solve2
     }

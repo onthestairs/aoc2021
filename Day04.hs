@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day4 (solution) where
+module Day04 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import Data.List (partition)
@@ -67,7 +67,7 @@ solve2 (ns, cs) = getScore ns cs last
 
 solution =
   Solution
-    { _parse = parseFile "4.txt" parseInput,
+    { _parse = parseFile "04.txt" parseInput,
       _solve1 = solve1,
       _solve2 = solve2
     }

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day6 (solution) where
+module Day06 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import qualified Data.MultiSet as MultiSet
@@ -24,7 +24,7 @@ solve2 = fish 256
 
 solution =
   Solution
-    { _parse = parseFile "6.txt" parseInts,
+    { _parse = parseFile "06.txt" parseInts,
       _solve1 = solve1,
       _solve2 = solve2
     }

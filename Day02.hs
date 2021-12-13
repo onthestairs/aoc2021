@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day2 (solution) where
+module Day02 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import Control.Lens
@@ -50,7 +50,7 @@ solve2 is = (\(d, h, _) -> d * h) $ execState program (0, 0, 0)
 
 solution =
   Solution
-    { _parse = parseFile "2.txt" parseInstructions,
+    { _parse = parseFile "02.txt" parseInstructions,
       _solve1 = solve1,
       _solve2 = solve2
     }

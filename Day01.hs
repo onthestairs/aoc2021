@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day1 (solution) where
+module Day01 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import Relude
@@ -29,7 +29,7 @@ solve2 ns = length $ filter (\(n1, n2) -> n2 > n1) pairs
 
 solution =
   Solution
-    { _parse = parseFile "1.txt" parseInts,
+    { _parse = parseFile "01.txt" parseInts,
       _solve1 = solve1,
       _solve2 = solve2
     }

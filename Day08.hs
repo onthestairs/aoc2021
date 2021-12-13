@@ -6,7 +6,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day8 (solution) where
+module Day08 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import Control.Monad.Watson (Watson, satisfying)
@@ -114,7 +114,7 @@ solve2 ns = do
 
 solution =
   Solution
-    { _parse = parseFile "8.txt" parseInput,
+    { _parse = parseFile "08.txt" parseInput,
       _solve1 = solve1,
       _solve2 = solve2
     }

@@ -8,37 +8,37 @@ import AOC
 import Control.Lens
 import Data.Generics.Labels
 import qualified Data.Map.Strict as Map
-import Day1
-import Day10
-import Day11
-import Day12
+import Day01
 -- import Day13
 -- import Day14
 -- import Day15
 -- import Day16
 -- import Day17
 -- import Day18
-import Day2
-import Day3
-import Day4
-import Day5
-import Day6
-import Day7
-import Day8
-import Day9
+import Day02
+import Day03
+import Day04
+import Day05
+import Day06
+import Day07
+import Day08
+import Day09
+import Day10
+import Day11
+import Day12
 import Relude
 
 solutions =
   Map.fromList
-    [ (1, SimpleSolution Day1.solution),
-      (2, SimpleSolution Day2.solution),
-      (3, SimpleSolution Day3.solution),
-      (4, SimpleSolution Day4.solution),
-      (5, SimpleSolution Day5.solution),
-      (6, SimpleSolution Day6.solution),
-      (7, SimpleSolution Day7.solution),
-      (8, SimpleSolution Day8.solution),
-      (9, SimpleSolution Day9.solution),
+    [ (1, SimpleSolution Day01.solution),
+      (2, SimpleSolution Day02.solution),
+      (3, SimpleSolution Day03.solution),
+      (4, SimpleSolution Day04.solution),
+      (5, SimpleSolution Day05.solution),
+      (6, SimpleSolution Day06.solution),
+      (7, SimpleSolution Day07.solution),
+      (8, SimpleSolution Day08.solution),
+      (9, SimpleSolution Day09.solution),
       (10, SimpleSolution Day10.solution),
       (11, SimpleSolution Day11.solution),
       (12, SimpleSolution Day12.solution)

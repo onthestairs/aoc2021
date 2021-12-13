@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day9 (solution) where
+module Day09 (solution) where
 
 import AOC (Parser, Solution (..), parseDigit, parseFile)
 import qualified Data.Matrix as Matrix
@@ -66,7 +66,7 @@ solve2 nss = product $ take 3 $ reverse $ sort $ map Set.size bs
 
 solution =
   Solution
-    { _parse = parseFile "9.txt" parseInts,
+    { _parse = parseFile "09.txt" parseInts,
       _solve1 = solve1,
       _solve2 = solve2
     }

@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Day5 (solution) where
+module Day05 (solution) where
 
 import AOC (Parser, Solution (..), parseFile, parseInt)
 import qualified Data.Map as Map
@@ -54,7 +54,7 @@ solve2 ls = Map.size $ Map.filter (>= 2) $ placeLines ls
 
 solution =
   Solution
-    { _parse = parseFile "5.txt" parseInput,
+    { _parse = parseFile "05.txt" parseInput,
       _solve1 = solve1,
       _solve2 = solve2
     }
