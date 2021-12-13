@@ -2,12 +2,12 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module AOC (Solution (..), SeparateParseSolution (..), GenericSolution (..), Parser, parseFile, parseInt, parseDigit, parseInt64, parseInteger, parseSignedInt) where
+module AOC (Solution (..), SeparateParseSolution (..), GenericSolution (..), Parser, parseFile, parseInt, parseDigit, parseInt64, parseInteger, parseSignedInt, sepByNewline) where
 
 import Control.Lens
 import Relude
-import Text.Megaparsec (Parsec, runParser)
-import Text.Megaparsec.Char (char, digitChar)
+import Text.Megaparsec (Parsec, anySingle, lookAhead, runParser, try)
+import Text.Megaparsec.Char (char, digitChar, newline)
 import qualified Text.Megaparsec.Char.Lexer as L
 
 data Solution a b c = Solution
@@ -72,3 +72,14 @@ parseSignedInt = do
   n <- parseInt
   let coefficient = if sign == '+' then 1 else -1
   pure $ coefficient * n
+
+sepByNewline :: Parser a -> Parser [a]
+sepByNewline p = do
+  x <- p
+  xs <- many $
+    try $ do
+      newline
+      c <- lookAhead anySingle
+      when (c == '\n') (fail "double newline")
+      p
+  pure $ x : xs
