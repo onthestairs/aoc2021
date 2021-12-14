@@ -34,6 +34,7 @@ let
     multiset
     holmes
     Stack
+    memoize
     # monad-loops
   ];
   my-ghc = myHaskellPackges.ghcWithPackages haskellDeps;
