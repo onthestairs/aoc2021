@@ -35,7 +35,7 @@ let
     holmes
     Stack
     memoize
-    # monad-loops
+    fgl
   ];
   my-ghc = myHaskellPackges.ghcWithPackages haskellDeps;
 in
