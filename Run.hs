@@ -9,7 +9,6 @@ import Control.Lens
 import Data.Generics.Labels
 import qualified Data.Map.Strict as Map
 import Day01
--- import Day16
 -- import Day17
 -- import Day18
 import Day02
@@ -26,6 +25,7 @@ import Day12
 import Day13
 import Day14
 import Day15
+import Day16
 import Relude
 
 solutions =
@@ -44,8 +44,8 @@ solutions =
       (12, SimpleSolution Day12.solution),
       (13, SimpleSolution Day13.solution),
       (14, SimpleSolution Day14.solution),
-      (15, SimpleSolution Day15.solution)
-      -- (16, SimpleSolution Day16.solution),
+      (15, SimpleSolution Day15.solution),
+      (16, SimpleSolution Day16.solution)
       -- (17, SimpleSolution Day17.solution),
       -- (18, TwoParseSolution Day18.solution)
     ]
