@@ -27,6 +27,7 @@ import Day16
 import Day17
 import Day18
 import Day20
+import Day21
 import Relude
 
 solutions =
@@ -49,7 +50,8 @@ solutions =
       (16, SimpleSolution Day16.solution),
       (17, SimpleSolution Day17.solution),
       (18, SimpleSolution Day18.solution),
-      (20, SimpleSolution Day20.solution)
+      (20, SimpleSolution Day20.solution),
+      (21, SimpleSolution Day21.solution)
     ]
 
 data Part = Part1 | Part2 | Both deriving (Eq)
