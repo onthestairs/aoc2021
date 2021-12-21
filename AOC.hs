@@ -66,7 +66,7 @@ parseInt64 = L.decimal
 parseInteger :: Parser Integer
 parseInteger = L.decimal
 
--- parseSignedInt :: Parser Int
+parseSignedInt :: Parser Int
 parseSignedInt = do
   sign <- char '+' <|> char '-'
   n <- parseInt
