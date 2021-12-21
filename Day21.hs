@@ -103,19 +103,24 @@ instance Semigroup Wins where
 instance Monoid Wins where
   mempty = Wins 0 0
 
-diracDiceOutcomes = [1, 2, 3]
+diracDice = [1, 2, 3]
+
+dirac 0 = [[]]
+dirac n = [d : ds | d <- diracDice, ds <- dirac (n -1)]
 
 wins :: ((Int, Int) -> (Int, Int) -> Bool -> Wins) -> (Int, Int) -> (Int, Int) -> Bool -> Wins
-wins wins' (p1, s1) (p2, s2) True = if (s2 >= 21) then Wins 0 1 else ws
+wins wins' (p1, s1) (p2, s2) True = if (s2 >= 21) then Wins 0 1 else totalWins
   where
-    ws = mconcat [let p = cycle p1 d 10 in wins' (p, s1 + p) (p2, s2) False | d <- diracDiceOutcomes]
-wins wins' (p1, s1) (p2, s2) False = if (s1 >= 21) then Wins 1 0 else ws
+    totalWins = mconcat [let p = cycle p1 (sum ds) 10 in wins' (p, s1 + p) (p2, s2) False | ds <- dirac 3]
+wins wins' (p1, s1) (p2, s2) False = if (s1 >= 21) then Wins 1 0 else totalWins
   where
-    ws = mconcat [let p = cycle p2 d 10 in wins' (p1, s1) (p, s2 + p) False | d <- diracDiceOutcomes]
+    totalWins = mconcat [let p = cycle p2 (sum ds) 10 in wins' (p1, s1) (p, s2 + p) True | ds <- dirac 3]
 
 winsMemo = memoFix3 wins
 
-solve2 (p1, p2) = winsMemo (p1, 0) (p2, 0) True
+solve2 (p1, p2) = max s1 s2
+  where
+    (Wins s1 s2) = winsMemo (p1, 0) (p2, 0) True
 
 solution =
   Solution
