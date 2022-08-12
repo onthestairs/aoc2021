@@ -4,3 +4,5 @@ data
 *.o
 *.dyn_hi
 *.dyn_o
+
+.direnv

@@ -1,12 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
 module Day11 (solution) where
 
 import AOC (Parser, Solution (..), parseDigit, parseFile)
-import Control.Lens (over, set, view, _1, _2)
+import Control.Lens (Lens', lens, over, set, view, _1, _2)
 import qualified Data.Matrix as Matrix
-import Data.Matrix.Lens (elemAt)
+-- import Data.Matrix.Lens (elemAt)
 import qualified Data.Set as Set
 import Relude hiding (fix)
 import Text.Megaparsec (eof, sepBy1)
@@ -30,6 +31,9 @@ fixM f x = do
   x' <- f x
   if x == x' then pure x else fixM f x'
 
+elemAt :: (Int, Int) -> Lens' (Matrix.Matrix a) a
+elemAt (i, j) = lens (Matrix.getElem i j) (\m x -> Matrix.setElem x (i, j) m)
+
 propStep :: Matrix.Matrix (Int, Bool) -> State Int (Matrix.Matrix (Int, Bool))
 propStep m = do
   let cs = filter (\c -> view (elemAt c . _1) m > 9 && view (elemAt c . _2) m == False) (coords m)
@@ -49,7 +53,7 @@ iterateM :: Monad m => Int -> (a -> m a) -> a -> m [a]
 iterateM 0 f x = pure []
 iterateM n f x = do
   x' <- f x
-  next <- iterateM (n -1) f x'
+  next <- iterateM (n - 1) f x'
   pure $ (x : next)
 
 solve1 nss = (flip execState) 0 $ do

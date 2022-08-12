@@ -1,4 +1,5 @@
 {-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
@@ -73,6 +74,7 @@ peekInput day = do
       putStrLn "Part 2"
       print parsed2
 
+showSolution :: GenericSolution -> Part -> IO ()
 showSolution (SimpleSolution solution) part = do
   maybeParsed <- view #_parse solution
   case maybeParsed of
